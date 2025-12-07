@@ -1,0 +1,42 @@
+# Java
+*.class
+*.jar
+*.war
+*.ear
+target/
+.mvn/
+mvnw
+mvnw.cmd
+
+# Angular
+node_modules/
+dist/
+.angular/
+
+# IDE
+.idea/
+.vscode/
+*.iml
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Environment
+.env
+.env.local
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Docker
+docker-compose.override.yml
+

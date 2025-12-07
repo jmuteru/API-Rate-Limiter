@@ -1,0 +1,69 @@
+<div *ngIf="message" [class]="'alert alert-' + messageType">{{ message }}</div>
+
+<form (ngSubmit)="onSubmit()" *ngIf="showForm">
+  <div class="form-group">
+    <label>Client ID *</label>
+    <input type="text" [(ngModel)]="client.clientId" name="clientId" required [disabled]="isEditMode" 
+           placeholder="e.g., client-001">
+    <small style="color: #666; display: block; margin-top: 4px;">
+      Unique identifier for this client (cannot be changed after creation)
+    </small>
+  </div>
+  
+  <div class="form-group">
+    <label>Client Name *</label>
+    <input type="text" [(ngModel)]="client.name" name="name" required placeholder="e.g., Acme Corporation">
+  </div>
+  
+  <div class="form-group">
+    <label>Description</label>
+    <input type="text" [(ngModel)]="client.description" name="description" 
+           placeholder="Brief description of the client">
+  </div>
+  
+  <div class="form-group">
+    <label>Contact Email</label>
+    <input type="email" [(ngModel)]="client.contactEmail" name="contactEmail" 
+           placeholder="contact@example.com">
+  </div>
+  
+  <div class="flex">
+    <button type="submit">{{ isEditMode ? 'Update' : 'Create' }}</button>
+    <button type="button" class="btn-secondary" (click)="cancelEdit()" *ngIf="isEditMode">Cancel</button>
+  </div>
+</form>
+
+<div style="margin-bottom: 16px;">
+  <button (click)="showNewForm()" *ngIf="!showForm">Add New Client</button>
+</div>
+
+<table *ngIf="clients.length > 0">
+  <thead>
+    <tr>
+      <th>Client ID</th>
+      <th>Name</th>
+      <th>Description</th>
+      <th>Contact Email</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let client of clients">
+      <td><strong>{{ client.clientId }}</strong></td>
+      <td>{{ client.name }}</td>
+      <td>{{ client.description || '-' }}</td>
+      <td>{{ client.contactEmail || '-' }}</td>
+      <td>
+        <div class="flex">
+          <button (click)="editClient(client)" class="btn-secondary" style="padding: 6px 12px;">Edit</button>
+          <button (click)="deleteClient(client.clientId)" class="btn-danger" style="padding: 6px 12px;">Delete</button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p *ngIf="clients.length === 0" class="text-center" style="color: #999; padding: 20px;">
+  No clients found. Create one to get started.
+</p>
+

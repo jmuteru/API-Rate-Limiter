@@ -1,0 +1,20 @@
+<div *ngIf="message" [class]="'alert alert-' + messageType">{{ message }}</div>
+
+<form (ngSubmit)="onSubmit()">
+  <div class="form-group">
+    <label>Global Requests Per Second *</label>
+    <input type="number" [(ngModel)]="config.globalRequestsPerSecond" name="globalRequestsPerSecond" required min="1">
+    <small style="color: #666; display: block; margin-top: 4px;">
+      Maximum number of requests allowed across all clients per second
+    </small>
+  </div>
+  
+  <div>
+    <button type="submit">Update System Limits</button>
+  </div>
+</form>
+
+<div *ngIf="config.id" style="margin-top: 16px; padding: 12px; background: #f8f9fa; border-radius: 6px;">
+  <strong>Current Setting:</strong> {{ config.globalRequestsPerSecond }} requests/second
+</div>
+

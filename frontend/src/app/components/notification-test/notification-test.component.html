@@ -1,0 +1,74 @@
+<form (ngSubmit)="sendNotification()">
+  <div class="form-group">
+    <label>Client ID *</label>
+    <div style="display: flex; gap: 8px; align-items: center;">
+      <select [(ngModel)]="clientId" name="clientId" required style="flex: 1;">
+        <option value="">-- Select a Client --</option>
+        <option *ngFor="let client of clients" [value]="client.clientId">
+          {{ client.clientId }} - {{ client.name }}
+        </option>
+      </select>
+    </div>
+    <small style="color: #666; display: block; margin-top: 4px;">
+      <span *ngIf="clients.length === 0" style="color: #e74c3c;">
+        No clients found. Create clients in the Client Management section above. The list will update automatically.
+      </span>
+      <span *ngIf="clients.length > 0">
+        {{ clients.length }} client(s) available. Select a client to test rate limiting.
+      </span>
+    </small>
+  </div>
+  
+  <div class="form-group">
+    <label>Notification Type *</label>
+    <select [(ngModel)]="notificationType" name="notificationType" required>
+      <option value="email">Email</option>
+      <option value="sms">SMS</option>
+    </select>
+  </div>
+  
+  <div class="form-group">
+    <label>Recipient *</label>
+    <input type="text" [(ngModel)]="request.recipient" name="recipient" required placeholder="email@example.com or +1234567890">
+  </div>
+  
+  <div class="form-group">
+    <label>Message *</label>
+    <input type="text" [(ngModel)]="request.message" name="message" required placeholder="Your notification message">
+  </div>
+  
+  <button type="submit" [disabled]="loading">Send Notification</button>
+  <button type="button" class="btn-secondary" (click)="sendMultiple()" [disabled]="loading" style="margin-left: 8px;">
+    Send 10 Requests (Test Rate Limiting)
+  </button>
+</form>
+
+<div *ngIf="results.length > 0" style="margin-top: 24px;">
+  <h3>Test Results</h3>
+  <table>
+    <thead>
+      <tr>
+        <th>#</th>
+        <th>Status</th>
+        <th>Response</th>
+        <th>Rate Limit Headers</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let result of results; let i = index" [style.background-color]="result.status === 200 ? '#d4edda' : '#f8d7da'">
+        <td>{{ i + 1 }}</td>
+        <td>{{ result.status }}</td>
+        <td>{{ result.message }}</td>
+        <td>
+          <small *ngIf="result.headers">
+            TimeWindow: {{ result.headers['x-ratelimit-timewindow-remaining'] || 'N/A' }}<br>
+            Monthly: {{ result.headers['x-ratelimit-monthly-remaining'] || 'N/A' }}<br>
+            Global: {{ result.headers['x-ratelimit-global-remaining'] || 'N/A' }}
+          </small>
+          <small *ngIf="!result.headers" style="color: #999;">No headers received</small>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

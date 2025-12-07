@@ -1,0 +1,89 @@
+<div *ngIf="message" [class]="'alert alert-' + messageType">{{ message }}</div>
+
+<form (ngSubmit)="onSubmit()" *ngIf="showForm">
+  <div class="form-group">
+    <label>Client ID *</label>
+    <div style="display: flex; gap: 8px; align-items: center;">
+      <select [(ngModel)]="config.clientId" name="clientId" required [disabled]="isEditMode" 
+              style="flex: 1;" (change)="onClientSelected()">
+        <option value="">-- Select a Client --</option>
+        <option *ngFor="let client of clients" [value]="client.clientId">
+          {{ client.clientId }} - {{ client.name }}
+        </option>
+      </select>
+      <button type="button" class="btn-secondary" (click)="allowManualEntry = !allowManualEntry" 
+              style="padding: 6px 12px; white-space: nowrap;" *ngIf="!isEditMode">
+        {{ allowManualEntry ? 'Select' : 'Manual' }}
+      </button>
+    </div>
+    <input *ngIf="allowManualEntry && !isEditMode" type="text" [(ngModel)]="config.clientId" 
+           name="clientIdManual" placeholder="Enter client ID manually" 
+           style="margin-top: 8px;">
+    <small style="color: #666; display: block; margin-top: 4px;" *ngIf="!allowManualEntry">
+      Select from existing clients or use "Manual" to enter a new client ID
+    </small>
+  </div>
+  
+  <div class="form-group">
+    <label>Time Window Requests *</label>
+    <input type="number" [(ngModel)]="config.timeWindowRequests" name="timeWindowRequests" required min="1">
+  </div>
+  
+  <div class="form-group">
+    <label>Time Window (seconds) *</label>
+    <input type="number" [(ngModel)]="config.timeWindowSeconds" name="timeWindowSeconds" required min="1">
+  </div>
+  
+  <div class="form-group">
+    <label>Monthly Requests *</label>
+    <input type="number" [(ngModel)]="config.monthlyRequests" name="monthlyRequests" required min="1">
+  </div>
+  
+  <div class="form-group">
+    <label>Throttling Mode *</label>
+    <select [(ngModel)]="config.throttlingMode" name="throttlingMode" required>
+      <option value="HARD">Hard (Reject)</option>
+      <option value="SOFT">Soft (Warning)</option>
+    </select>
+  </div>
+  
+  <div class="flex">
+    <button type="submit">{{ isEditMode ? 'Update' : 'Create' }}</button>
+    <button type="button" class="btn-secondary" (click)="cancelEdit()" *ngIf="isEditMode">Cancel</button>
+  </div>
+</form>
+
+<div style="margin-bottom: 16px;">
+  <button (click)="showNewForm()" *ngIf="!showForm">Add New Configuration</button>
+</div>
+
+<table *ngIf="configs.length > 0">
+  <thead>
+    <tr>
+      <th>Client ID</th>
+      <th>Time Window</th>
+      <th>Monthly Limit</th>
+      <th>Throttling</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let config of configs">
+      <td>{{ config.clientId }}</td>
+      <td>{{ config.timeWindowRequests }} / {{ config.timeWindowSeconds }}s</td>
+      <td>{{ config.monthlyRequests }}</td>
+      <td>{{ config.throttlingMode }}</td>
+      <td>
+        <div class="flex">
+          <button (click)="editConfig(config)" class="btn-secondary" style="padding: 6px 12px;">Edit</button>
+          <button (click)="deleteConfig(config.clientId)" class="btn-danger" style="padding: 6px 12px;">Delete</button>
+        </div>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<p *ngIf="configs.length === 0" class="text-center" style="color: #999; padding: 20px;">
+  No rate limit configurations found. Create one to get started.
+</p>
+

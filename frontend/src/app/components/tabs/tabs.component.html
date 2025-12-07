@@ -1,0 +1,12 @@
+<div class="tabs-container">
+  <div class="tabs-header">
+    <button
+      *ngFor="let tab of tabs; let i = index"
+      [class.active]="isActive(i)"
+      (click)="selectTab(i)"
+      class="tab-button">
+      {{ tab.label }}
+    </button>
+  </div>
+</div>
+

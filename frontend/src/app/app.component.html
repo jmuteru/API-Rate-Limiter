@@ -1,0 +1,34 @@
+<div class="container">
+  <h1 class="app-title">API Rate Limiter</h1>
+  
+  <div class="card">
+    <!-- material UI tabs -->
+    <mat-tab-group [(selectedIndex)]="activeTab" animationDuration="300ms">
+      <!-- client management -->
+      <mat-tab label="Client Management">
+        <div class="tab-content">
+          <app-client-management></app-client-management>
+        </div>
+      </mat-tab>
+      <!-- global limits -->
+      <mat-tab label="System Global Limits">
+        <div class="tab-content">
+          <app-system-limit-config></app-system-limit-config>
+        </div>
+      </mat-tab>
+      <!-- rate limit configs -->
+      <mat-tab label="Client Rate Limit Configurations">
+        <div class="tab-content">
+          <app-rate-limit-config></app-rate-limit-config>
+        </div>
+      </mat-tab>
+      
+      <mat-tab label="Test Notifications">
+        <div class="tab-content">
+          <app-notification-test></app-notification-test>
+        </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+</div>
+

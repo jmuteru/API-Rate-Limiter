@@ -1,0 +1,33 @@
+
+.app-title {
+  color: black;
+  text-align: center;
+  margin-bottom: 32px;
+  font-size: 2.5rem;
+  font-weight: 300;
+  letter-spacing: 1px;
+  
+}
+
+.tab-content {
+  padding: 24px 0;
+}
+
+::ng-deep .mat-mdc-tab-group {
+  font-family: inherit;
+}
+
+::ng-deep .mat-mdc-tab-label {
+  font-size: 15px;
+  font-weight: 500;
+  min-width: 120px;
+}
+
+::ng-deep .mat-mdc-tab-header {
+  border-bottom: 2px solid rgba(0, 0, 0, 0.12);
+}
+
+::ng-deep .mat-mdc-tab-body-wrapper {
+  padding-top: 24px;
+}
+
